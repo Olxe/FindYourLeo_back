@@ -1,0 +1,25 @@
+{
+  "name": "findyourleo_back",
+  "version": "1.0.0",
+  "description": "Flutter app back nodejs",
+  "main": "findyourleo.js",
+  "scripts": {
+    "start": "nodemon ./src/findyourleo.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Olxe/FindYourLeo_back.git"
+  },
+  "author": "Michaël BUGNONE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Olxe/FindYourLeo_back/issues"
+  },
+  "homepage": "https://github.com/Olxe/FindYourLeo_back#readme",
+  "dependencies": {
+    "all": "0.0.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6"
+  }
+}
