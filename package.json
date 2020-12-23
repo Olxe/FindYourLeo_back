@@ -19,7 +19,11 @@
   "homepage": "https://github.com/Olxe/FindYourLeo_back#readme",
   "dependencies": {
     "all": "0.0.0",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.6"
+    "mime": "^2.4.7",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.6",
+    "randomatic": "^3.1.1"
   }
 }
