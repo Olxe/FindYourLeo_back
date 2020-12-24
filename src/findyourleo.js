@@ -83,7 +83,7 @@ con.connect(function (err) {
               con.query(query, function (err) {
                 if (err) throw err;
                 else {
-                  console.log('Level create in room: ' + code);
+                  console.log('Level created in room: ' + code);
                   uploadImage(code, lvl.id, lvl.base64Image);
                 }
               });
