@@ -66,6 +66,37 @@ con.connect(function (err) {
       res.send({ levels: levels });
     });
 
+    app.get("/rooms/:code", async (req, res) => {
+      const code = req.params.code;
+
+      console.log(new Date().toString());
+      console.log("New request with code: " + code);
+
+      try {
+        let query = "SELECT level.nbLevel, level.amount FROM level INNER JOIN room on room.id = level.idRoom WHERE room.code = '" + code + "'";
+        con.query(query, function (err, result) {
+          if (err) throw err;
+          else {
+            let levels = [];
+            result.forEach(e => {
+              levels.push({
+                id: e.nbLevel,
+                amount: e.amount,
+                base64Image: base64_encode("./data/" + code + "/" + e.nbLevel + ".jpg")
+              });
+            });
+            res.send({levels: levels});
+          }
+        });
+        return;
+      }
+      catch (err) {
+        console.log(err);
+      }
+
+      return res.sendStatus(500);
+    });
+
     app.post('/rooms', async (req, res) => {
       let code = randomize('A', 5);
       const levels = req.body.levels;
@@ -110,6 +141,11 @@ app.listen(port, function (err) {
   if (err) throw err;
   console.log('Started server at http://localhost:' + port);
 });
+
+function base64_encode(file) {
+  let bitmap = fs.readFileSync(file);
+  return new Buffer.from(bitmap).toString('base64');
+}
 
 async function uploadImage(code, lvl, imgData) {
   fs.mkdir('./data/' + code, { recursive: true }, (err) => {
