@@ -30,41 +30,14 @@ con.connect(function (err) {
     if (err) throw err;
     console.log("Connected to MySQL database !");
 
-    app.get('/file/:name', function (req, res) {
-      var file = path.join(__dirname, '../data/' + req.params.name)
+    app.get('/', (req, res) => {
+      res.send('Welcome to Find The Compromise !')
+    })
 
-      res.sendFile(file, function (err) {
-        if (err) {
-          console.log(new Date().toString());
-          console.log(err);
-          res.status(404).send('Sorry! You can\'t see that.');
-        }
-        else {
-          console.log(new Date().toString());
-          console.log(file);
-        }
-      });
-    });
-
-    app.get('/data/:name', function (req, res) {
-      console.log(new Date().toString());
-      console.log('data: ' + req.params.name);
-
-      let levels = [];
-      if (req.params.name == 'AAAA') {
-        levels.push({
-          id: 1,
-          amount: 100,
-          path: '1.jpg',
-        });
-        levels.push({
-          id: 2,
-          amount: 50,
-          path: '2.jpg',
-        });
-      }
-      res.send({ levels: levels });
-    });
+    app.get("/data/:code/:id", async (req, res) => {
+      console.log(req.params.code, req.params.id);
+      res.send("test");
+    })
 
     app.get("/rooms/:code", async (req, res) => {
       const code = req.params.code;
@@ -135,7 +108,6 @@ con.connect(function (err) {
     console.log(err);
   }
 });
-
 
 app.listen(port, function (err) {
   if (err) throw err;
