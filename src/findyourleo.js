@@ -22,7 +22,7 @@ var con = mysql.createConnection({
   user: "root",
   // password: "rootmdp20",
   password: "",
-  database: "find_your_leo"
+  database: "find_the_compromise"
 });
 
 con.connect(function (err) {
@@ -34,12 +34,22 @@ con.connect(function (err) {
       res.send('Welcome to Find The Compromise !')
     })
 
-    app.get("/data/:code/:id", async (req, res) => {
+    app.get("/data/:code/:id", (req, res) => {
       console.log(req.params.code, req.params.id);
-      res.send("test");
+
+      let filePath = path.join(__dirname, "../data/", req.params.code, "/", req.params.id + ".jpg");
+      console.log(filePath);
+      res.sendFile(filePath, function (err) {
+        if (err) {
+          console.log(err);
+          res.status(err.status).end();
+        } else {
+          console.log('Sent:', filePath);
+        }
+      });
     })
 
-    app.get("/rooms/:code", async (req, res) => {
+    app.get("/rooms/:code", (req, res) => {
       const code = req.params.code;
 
       console.log(new Date().toString());
@@ -50,15 +60,18 @@ con.connect(function (err) {
         con.query(query, function (err, result) {
           if (err) throw err;
           else {
-            let levels = [];
-            result.forEach(e => {
-              levels.push({
-                id: e.nbLevel,
-                amount: e.amount,
-                base64Image: base64_encode("./data/" + code + "/" + e.nbLevel + ".jpg")
+            require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+              let levels = [];
+              result.forEach(e => {
+                levels.push({
+                  id: e.nbLevel,
+                  amount: e.amount,
+                  link: "http://" + add + ":" + port + "/data/" + code + "/" + e.nbLevel,
+                  // base64Image: base64_encode("./data/" + code + "/" + e.nbLevel + ".jpg")
+                });
               });
+              res.send({ levels: levels });
             });
-            res.send({levels: levels});
           }
         });
         return;
